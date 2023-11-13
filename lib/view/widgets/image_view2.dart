@@ -52,7 +52,8 @@ class _ImageView2State extends State<ImageView2> {
                     ),
             ),
           ),
-          widget.isFav == true || FavouriteCubit.get(context).favourites.any((element) => element.imageUrl == widget.imgPath)?SizedBox():
+    
+          
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
@@ -60,40 +61,101 @@ class _ImageView2State extends State<ImageView2> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                InkWell(
-                    onTap: () async {
-
-
-                      await FavouriteCubit.get(context)
-                          .addFavourite(wallpaper: widget.photo!);
-                      setState(() {
-                        isFavourite = !isFavourite;
-                      });
-                      //Navigator.pop(context);
+                   InkWell(
+                    onTap: () {
+                  _save();
                     },
                     child: Stack(
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width / 8,
+                          width: MediaQuery.of(context).size.width / 4,
                           height: 50,
                           decoration: BoxDecoration(
-                            color: Color(0xffffff),
+                            color: Color(0xff1C1B1B).withOpacity(0.8),
                             borderRadius: BorderRadius.circular(40),
                           ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width / 8,
-                          height: 50,
-                          alignment: Alignment.center,
-                          child: Icon(
-                            isFavourite == true
-                                ? Icons.favorite
-                                : Icons.favorite_border_outlined,
-                            color: Colors.red,
-                          ),
-                        )
+                            width: MediaQuery.of(context).size.width /4,
+                            height: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white24, width: 1),
+                                borderRadius: BorderRadius.circular(40),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Color(0x36FFFFFF),
+                                      Color(0x0FFFFFFF)
+                                    ],
+                                    begin: FractionalOffset.topLeft,
+                                    end: FractionalOffset.bottomRight)),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "Download",
+                                  style: TextStyle(
+                                      color: Colors.white70,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+
+                              ],
+                            )),
                       ],
                     )),
+                    widget.isFav == true || FavouriteCubit.get(context).favourites.any((element) => element.imageUrl == widget.imgPath)?SizedBox():
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                      onTap: () async {
+
+
+                        await FavouriteCubit.get(context)
+                            .addFavourite(wallpaper: widget.photo!);
+                        setState(() {
+                          isFavourite = !isFavourite;
+                        });
+                        //Navigator.pop(context);
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 8,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Color(0xffffff),
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 8,
+                            height: 50,
+                            margin: EdgeInsets.all(8),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                border:
+                                Border.all(color: Colors.white24, width: 1),
+                                borderRadius: BorderRadius.circular(40),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Color(0x36FFFFFF),
+                                      Color(0x0FFFFFFF)
+                                    ],
+                                    begin: FractionalOffset.topLeft,
+                                    end: FractionalOffset.bottomRight)),
+                            child: Icon(
+                              isFavourite == true
+                                  ? Icons.favorite
+                                  : Icons.favorite_border_outlined,
+                              color: Colors.red,
+                              size: 35,
+                            ),
+                          )
+                        ],
+                      )),
+                ),
                 SizedBox(
                   height: 50,
                 )
@@ -104,4 +166,25 @@ class _ImageView2State extends State<ImageView2> {
       ),
     );
   }
+    _save() async {
+    // await _askPermission();
+    var response = await Dio().get(widget.imgPath,
+        options: Options(responseType: ResponseType.bytes));
+    final result =
+        await ImageGallerySaver.saveImage(Uint8List.fromList(response.data));
+   
+    Navigator.pop(context);
+
+  }
+
+  // _askPermission() async {
+  //   if (Platform.isIOS) {
+  //     /*Map<PermissionGroup, PermissionStatus> permissions =
+  //         */await PermissionHandler()
+  //             .requestPermissions([PermissionGroup.photos]);
+  //   } else {
+  //    /* PermissionStatus permission = */await PermissionHandler()
+  //         .checkPermissionStatus(PermissionGroup.storage);
+  //   }
+  // }
 }
