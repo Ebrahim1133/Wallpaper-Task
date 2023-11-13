@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "526698773806",
+    "project_id": "taskwallpaper-d668a",
+    "storage_bucket": "taskwallpaper-d668a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526698773806:android:a747225d8cfe7dca0c8ebf",
+        "android_client_info": {
+          "package_name": "com.example.wallpaper_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUAn_8Y8MRBFof8O44srs4B0mPHA6J2xE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
